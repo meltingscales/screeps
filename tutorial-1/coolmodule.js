@@ -9,5 +9,13 @@
 
 module.exports =
 {
+  function notYetFull(creep, resource)
+  {
+    if(resource == RESOURCE_ENERGY)
+    {
 
+    }
+
+    return creep.carry.
+  }
 };
