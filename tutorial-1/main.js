@@ -1,6 +1,8 @@
 //Game.spawns['Spawn1'].createCreep( [WORK, CARRY, MOVE], 'Harvester1' );
 
+var _ = require('coolmodule');
 
+console.log(_.testin); //to test if my import works
 
 module.exports.loop = function ()
 {
@@ -8,7 +10,7 @@ module.exports.loop = function ()
     var creep = Game.creeps['Harvester1'];
 
     if(creep.carry.energy < creep.carryCapacity)
-    {//we're not full yet
+    {//if (energy carried) < (what we can carry)
         var sources = creep.room.find(FIND_SOURCES);
 
         if(creep.harvest(sources[0]) == ERR_NOT_IN_RANGE)

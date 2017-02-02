@@ -7,8 +7,28 @@
  * mod.thing == 'a thing'; // true
  */
 
+var testin = Game.creeps["ass"];
+
 module.exports =
 {
+
+  function creepHas(aCreep,resource)
+  {
+    switch(resource)
+    {
+      case RESOURCE_ENERGY:
+        return aCreep.carry.energy;
+
+      default:
+        return "oh fuck";
+
+    }
+
+  }
+
+
+  function maintainCreepAmount()
+
   function notYetFull(creep, resource)
   {
     if(resource == RESOURCE_ENERGY)
@@ -16,6 +36,6 @@ module.exports =
 
     }
 
-    return creep.carry.
+    return "bah";
   }
 };
