@@ -2,15 +2,18 @@ var test = require('helperfns');
 
 var roleHarvester =
 {
-
   /** @param {Creep} creep **/
   run: function(creep)
   {
+    if(creep.memory["ROLE"] == undefined)
+    {
+      creep.memory["ROLE"] = "ROLEHARVESTER";
+    }
+
+
     if(creep.carry[RESOURCE_ENERGY] < creep.carryCapacity)
     {
       var sources = creep.room.find(FIND_SOURCES);
-
-      if(creep.memory["closeEnergy"] == 1)
 
       if(creep.harvest(sources[0]) == ERR_NOT_IN_RANGE)
       {
