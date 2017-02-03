@@ -38,20 +38,33 @@ function _maintainPopulation(spawner, maxPop, ratiosList, bodypartsList, nameTem
   //
   //  we want 11.
   //
-  //  [6.6, 1.1, 3.3] is invalid...but, I see a pattern here...
+  //  [6.6, 1.1, 3.3] is invalid...but, I see a pattern here... we round them.
+  //  [7,   1,   3]
   //
   //
+  // one last case. equal numbers, which gets priority?
+  //
+  //
+  // [0, 0.5, 0.5] with an 11.
+  //
+  // [0, 5.5, 5.5]
+  // [0, 6,   6]  this is bad. we've got one too many. we'll deal with this later.
   //
 
   if(currPop > maxPop)
   {
     console.log(currPop + " > " + maxPop + ", so not spawning...");//we dont need to spawn
   }
+
+
+
+
+
   else
   {
     //now we need to determine what to spawn...
 
-    //loop through all screeps tied to this spawn, subtracting the "existing bodies" from our bodypartsList
+    //loop through all screeps tied to this spawn, subtracting the "existing bodies" from our bodyTypesList
       //
       //
     //
