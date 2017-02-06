@@ -23,17 +23,25 @@
 
 
 
+
+
+
 // var _ = require('coolmodule');
 
 var helperfns = require('helperfns');
-var roleHarvester = require('role.harvester');
-var spawnAutobirth = require('spawn.autobirth');
 
-var closeEnergy = "CLOSE_ENERGY";
+var roleHarvester = require('role.harvester');
+var role = require('role');
+
+var spawnAutobirth = require('spawn.autobirth');
+var birthHandler = require("birthhandler");
 
 // console.log(_.testin); //to test if my import works
 
 var creepArr = ["s1Creep_0","s1Creep_1","s1Creep_2","s1Creep_3"];
+
+var Spawn1 = Game.spawns["Spawn1"];
+
 
 module.exports.loop = function()
 {
@@ -43,20 +51,12 @@ module.exports.loop = function()
     {
       roleHarvester.run(Game.creeps[creepArr[i]]);
     }
-    else if(Game.spawns['Spawn1'].canCreateCreep([WORK, CARRY, MOVE],creepArr[i]) == OK)
-    {
-      Game.spawns['Spawn1'].createCreep([WORK, CARRY, MOVE],creepArr[i]);
-      Memory.spawns['Spawn1'].creeps[i] = creepArr[i]; //log creepname
-      Memory.spawns['Spawn1'].creepBodypartNumbers[JSON.stringify([WORK, CARRY, MOVE])]++;//log bodytype
-      Memory.creeps[creepArr[i]].body = [WORK,CARRY,MOVE];
-    }  
   }
+
+  Game.spawns['Spawn1'].birthCreep([WORK, CARRY, MOVE],creepArr[i]);
 
   // console.log(helperfns.randomItem(["1","2","3"]));
   // console.log(helperfns.rand(3,5));
-
-  spawnAutobirth.spawnerManagePopulation(Game.spawns['Spawn1']);
-
 
   helperfns.runEvery(function(){console.log();},1);
 };

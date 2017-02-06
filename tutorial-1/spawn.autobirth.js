@@ -12,9 +12,16 @@ var DEFAULT_BODYTYPES_LIST = [[WORK,CARRY,MOVE],[CARRY,CARRY,MOVE],[WORK,WORK,MO
 var poobyputt =
 {
 
-spawnerManagePopulation(spawner)
+/**
+  * @param {StructureSpawn} spawner
+  * @param {string} nameTemplate
+  **/
+
+spawnerManagePopulation(spawner, nameTemplate)
 { //use k-v pair of JSON.str(bodytype):howmanytospawn loaded into memory combined with
   //keeping track of when I spawn something to actually DO the friggin spawning...
+
+  var nameTemplate2 = (nameTemplate + spawner.memory.creeps.length); //"s1Creep_" + x
 
   if(spawner.memory.spawnOptions == undefined)
   {
@@ -35,40 +42,67 @@ spawnerManagePopulation(spawner)
       spawner.memory.spawnOptions["BODYTYPES_LIST"]);
       spawner.memory["toSpawnList.freshness"] = Game.time;
   }
-  else
-  {
-    console.log("spawner " + spawner + " DOES HAVE a to-spawn list. insert actual code here...");
-    
-    if((Game.time % refreshLong) == 0)
-    {//periodic check of freshness
-      console.log("periodic " + refreshLong + "-tick check of freshness...");
-      
-      if((Game.time - spawner.memory["toSpawnList.freshness"]) > refreshStale)
-      {
-        spawner.memory.toSpawnList = datahandler.rebuildToSpawnList(spawner);
-        spawner.memory["toSpawnList.freshness"] = Game.time;
-      }
-      
-      if((Game.time - spawner.memory["creepBodypartNumbers.freshness"]) > refreshStale)
-      {
-        spawner.memory.creepBodypartNumbers = datahandler.rebuildCreepBodypartNumbers(spawner);
-        spawner.memory["creepBodypartNumbers.freshness"] = Game.time;
-      }
-      
-      if((Game.time - spawner.memory["toSpawnNow.freshness"]) > refreshStale)
-      {
-        spawner.memory.toSpawnNow = datahandler.processToSpawnList(spawner);
-        spawner.memory["toSpawnNow.freshness"] = Game.time;
-      }
-    }//end of periodic check
-    
-    if(spawner.canCreateCreep(spawner.memory.toSpawnNow))
+
+  console.log("spawner " + spawner + " DOES HAVE a to-spawn list. insert actual code here...");
+
+  if((Game.time % refreshLong) == 0)
+  {//periodic check of freshness
+    console.log("periodic " + refreshLong + "-tick check of freshness...");
+
+    if((Game.time - spawner.memory["toSpawnList.freshness"]) > refreshStale)
     {
-      
+      console.log("Refreshing toSpawnList");
+      spawner.memory.toSpawnList = datahandler.rebuildToSpawnList(spawner);
+      spawner.memory["toSpawnList.freshness"] = Game.time;
     }
-    
+
+    if((Game.time - spawner.memory["creepBodypartNumbers.freshness"]) > refreshStale)
+    {
+      console.log("Refreshing creepBodypartNumbers");
+      spawner.memory.creepBodypartNumbers = datahandler.rebuildCreepBodypartNumbers(spawner);
+      spawner.memory["creepBodypartNumbers.freshness"] = Game.time;
+    }
+
+    if((Game.time - spawner.memory["toSpawnNow.freshness"]) > refreshStale)
+    {
+      console.log("Refreshing toSpawnNow");
+      spawner.memory.toSpawnNow.body = datahandler.processToSpawnList(spawner);
+      spawner.memory.toSpawnNow.name = nameTemplate2;
+      spawner.memory["toSpawnNow.freshness"] = Game.time;
+    }
+  }//end of periodic check
+
+  if(spawner.memory.toSpawnNow.body == undefined)
+  { //TODO delete this TODO
+    console.log("Refeshing toSpawnNow...")
+    spawner.memory.toSpawnNow.body = datahandler.processToSpawnList(spawner);
+    spawner.memory.toSpawnNow.name = nameTemplate2;
+
+
+
+    console.log("Attempting to create creep with body \'" + JSON.stringify(spawner.memory.toSpawnNow.body) + '\' and name '+nameTemplate2);
+    if(spawner.canCreateCreep(spawner.memory.toSpawnNow.body,nameTemplate2) == OK)
+    {
+      console.log("Birthing creep \'" + nameTemplate2 + "\', bodytype \'" + JSON.stringify(spawner.memory.toSpawnNow.body) + "\'");
+
+      spawner.createCreep(spawner.memory.toSpawnNow.body,nameTemplate2); //actually make creep
+
+      spawner.memory.creeps.push(nameTemplate2); //record name
+      memory.creeps[nameTemplate].body = spawner.memory.toSpawnNow.body; //record body in creep memory
+
+
+      spawner.memory.toSpawnList[JSON.stringify(spawner.memory.toSpawnNow.body)] += -1; //need 1 less of bod X
+      spawner.memory.creepBodypartNumbers[JSON.stringify(spawner.memory.toSpawnNow.body)]+= 1; //have 1 more of bod X
+
+      //update spawner.memory.toSpawnNow with next creep to spawn
+    }
+    else
+    {
+      console.log("Not birthing creep because " + helperfns.resolveError(spawner.canCreateCreep(spawner.memory.toSpawnNow.body,nameTemplate2)))
+    }
+
   }
-    
+
 },
 
 
@@ -82,7 +116,7 @@ spawnerManagePopulation(spawner)
   **/
 maintainPopulation(spawner, maxPop, ratiosList, bodypartsList, nameTemplate)
 {
-  
+
 }
 
 }
