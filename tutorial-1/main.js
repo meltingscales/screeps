@@ -10,6 +10,7 @@
 
 // console.log(require('spawn.autobirth').rebuildToSpawnList(Game.spawns['Spawn1'],10,[0.6,0.1,0.3],[[WORK,CARRY,MOVE],[CARRY,CARRY,MOVE],[WORK,WORK,MOVE]]));
 
+// console.log(JSON.stringify(require('helperfns').weightedChoose([1,5,3],[1,5,3])));
 
 
 
@@ -42,10 +43,13 @@ module.exports.loop = function()
     {
       roleHarvester.run(Game.creeps[creepArr[i]]);
     }
-    else
+    else if(Game.spawns['Spawn1'].canCreateCreep([WORK, CARRY, MOVE],creepArr[i]) == OK)
     {
       Game.spawns['Spawn1'].createCreep([WORK, CARRY, MOVE],creepArr[i]);
-    }
+      Memory.spawns['Spawn1'].creeps[i] = creepArr[i]; //log creepname
+      Memory.spawns['Spawn1'].creepBodypartNumbers[JSON.stringify([WORK, CARRY, MOVE])]++;//log bodytype
+      Memory.creeps[creepArr[i]].body = [WORK,CARRY,MOVE];
+    }  
   }
 
   // console.log(helperfns.randomItem(["1","2","3"]));

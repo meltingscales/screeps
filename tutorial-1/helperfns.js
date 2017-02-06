@@ -31,25 +31,34 @@ var poopybutt =
     }
     return;
   },
-
-
+  
+  
   rand(min,max)
   {
     return ((Math.random() * (max - min)) + min);
   },
-
+  
   randomItem(list)
   {
     randNum = this.rand(0,list.length-1);
     return list[Math.round(randNum)];
   },
-
+  
   weightedChoose(list,weights)
   {//returns an item from a list based on given weights
     //["5","2","1a","1b"],[5,2,1,1]
-
-    totalWeight = weights.reduce(function(a,b){return a+b;});
-
+    
+    var listBig = [];
+      
+    for(i = 0; i < weights.length; i++)
+    {
+      for(j = 0; j < weights[i]; j++)
+      {
+        listBig.push(list[i]); //so fucking inefficient but I DONT CAAAAAARE
+      }
+    }
+    
+    return this.randomItem(listBig);
   },
 
 }
