@@ -1,16 +1,16 @@
 var poopybutt =
 {
 
-  runEvery(muhfunc, secs)
+  runEvery(muhfunc, secs, verbose)
   {
     if(((Game.time ) % secs) == 0)
     {
-      console.log("did run function because " + Game.time + " % " + secs + " == 0");
+      if(verbose != undefined){console.log("ran function \'" + arguments.callee.name + "()\' because " + Game.time + " % " + secs + " == 0");}
       muhfunc();
     }
     else
     {
-      console.log("didn't run function because " + Game.time + " % " + secs + " != 0");
+      // console.log("didn't run function because " + Game.time + " % " + secs + " != 0");
     }
   },
 
