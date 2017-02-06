@@ -40,6 +40,8 @@ var birthHandler = require("birthhandler");
 
 var creepArr = ["s1Creep_0","s1Creep_1","s1Creep_2","s1Creep_3"];
 
+//test
+
 var Spawn1 = Game.spawns["Spawn1"];
 
 
