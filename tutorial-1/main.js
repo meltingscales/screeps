@@ -32,36 +32,27 @@ var closeEnergy = "CLOSE_ENERGY";
 
 // console.log(_.testin); //to test if my import works
 
+var creepArr = ["s1Creep_0","s1Creep_1","s1Creep_2","s1Creep_3"];
+
 module.exports.loop = function()
 {
-
-  if(Game.creeps['s1Creep_0'] != undefined)
+  for(i = 0; i < creepArr.length; i++)
   {
-    var creep = Game.creeps['s1Creep_0'];
-    roleHarvester.run(creep);
+    if(Game.creeps[creepArr[i]] != undefined)
+    {
+      roleHarvester.run(Game.creeps[creepArr[i]]);
+    }
+    else
+    {
+      Game.spawns['Spawn1'].createCreep([WORK, CARRY, MOVE],creepArr[i]);
+    }
   }
 
-  if(Game.creeps['s1Creep_1'] != undefined)
-  {
-    var creep2 = Game.creeps['s1Creep_1'];
-    roleHarvester.run(creep2);
-  }
+  // console.log(helperfns.randomItem(["1","2","3"]));
+  // console.log(helperfns.rand(3,5));
 
-    helperfns.runEvery(
-    function(){spawnAutobirth.rebuildToSpawnList(
-        Game.spawns['Spawn1'], //spawn
-        15,                     //how many we want to spawn
+  spawnAutobirth.spawnerManagePopulation(Game.spawns['Spawn1']);
 
-        [0.6,0.1,0.3],         //ratios of bodyparts
 
-        [
-          [WORK,CARRY,MOVE],
-          [CARRY,CARRY,MOVE],  //body parts list
-          [WORK,WORK,MOVE]
-        ]
-      );},
-      6
-    );
-
-    helperfns.runEvery(function(){console.log();},2);
+  helperfns.runEvery(function(){console.log();},1);
 };

@@ -1,33 +1,30 @@
 var helperfns = require('helperfns');
 
-var refresh = 50;
+var refresh = 7;
 
 var DEFAULT_MAX_POP = 10;
 var DEFAULT_RATIOS_LIST = [0.6,0.3,0.1];
-var DEFAULT_BODYPARTS_LIST =[[WORK,CARRY,MOVE],[CARRY,CARRY,MOVE],[WORK,WORK,MOVE]];
+var DEFAULT_BODYTYPES_LIST =[[WORK,CARRY,MOVE],[CARRY,CARRY,MOVE],[WORK,WORK,MOVE]];
 
 
-function spawnerManagePopulation(spawner)
+function _spawnerManagePopulation(spawner)
 { //use k-v pair of JSON.str(bodytype):howmanytospawn loaded into memory combined with
   //keeping track of when I spawn something to actually DO the friggin spawning...
-  helperfns.runEvery(
-    function()
+
+    if(Memory.spawns[spawner.name].toSpawnList == undefined)
     {
+      console.log("spawner " + spawner + " does NOT have a to-spawn list. REBUILDING with default values.");
+      Memory.spawns[spawner.name].toSpawnList = _rebuildToSpawnList(spawner,DEFAULT_MAX_POP,DEFAULT_RATIOS_LIST,DEFAULT_BODYTYPES_LIST);
+    }
+    else
+    {
+      console.log("spawner " + spawner + " DOES HAVE a to-spawn list. insert actual code here...");
 
-      if(Memory.spawns[spawner].toSpawnList == undefined)
-      {
-        Memory.spawns[spawner].toSpawnList = _rebuildToSpawnList(spawner,DEFAULT_MAX_POP,DEFAULT_RATIOS_LIST,DEFAULT_BODYPARTS_LIST);
-      }
-
-
-
-
-
+      
 
 
-    },
-    refresh
-  )
+    }
+
 }
 
 
@@ -41,32 +38,13 @@ function _processToSpawnList(spawner, toSpawnList)
 
 }
 
+
 function _rebuildToSpawnList(spawner, maxPop, ratiosList, bodyPartsList)
 { //returns an object that tells you what bodytypes you need to spawn
 
       console.log("\n\nrebuilding to-spawn list");
       console.log("Was passed " + spawner + ", " + maxPop + ", " + ratiosList + ", " + JSON.stringify(bodyPartsList));
       // console.log("spawner's spawned creeps = " + Memory.spawns[spawner.name].creeps.length );
-
-      if(Memory.spawns[spawner.name] == undefined)
-      {
-        Memory.spawns[spawner.name] = //make memory.spawns list
-        {
-          "creeps":[],
-          "creepBodypartNumbers":{}
-        };
-
-        for(i = 0; i < ratiosList.length; i++)
-        {
-          if(Memory.spawns[spawner.name].creepBodypartNumbers[ratiosList[i]] == undefined)
-          {
-            Memory.spawns[spawner.name].creepBodypartNumbers[ratiosList[i]] = 0;
-          }
-        }
-
-        console.log("Memory.spawns." + spawner.name + "was undefined, so we made a new OBJECT.");
-      }
-
 
       var currPop = Memory.spawns[spawner.name].creeps.length;
 
@@ -151,17 +129,22 @@ var poobyputt =
   **/
   maintainPopulation: function(spawner, maxPop, ratiosList, bodyPartsList, nameTemplate)
   {
-    _maintainPopulation(spawner,maxPop,ratiosList,bodyPartsList,nameTemplate);
+    return _maintainPopulation(spawner,maxPop,ratiosList,bodyPartsList,nameTemplate);
   },
 
   rebuildCreepBodypartNumbers: function(spawner, creepNames)
   {
-    _rebuildCreepBodypartNumbers(spawner,creepNames);
+    return _rebuildCreepBodypartNumbers(spawner,creepNames);
   },
 
   rebuildToSpawnList: function(spawner, maxPop, ratiosList, bodyPartsList)
   {
-    _rebuildToSpawnList(spawner, maxPop, ratiosList, bodyPartsList);
+    return _rebuildToSpawnList(spawner, maxPop, ratiosList, bodyPartsList);
+  },
+
+  spawnerManagePopulation: function(spawner)
+  {
+    return _spawnerManagePopulation(spawner);
   },
 
 
