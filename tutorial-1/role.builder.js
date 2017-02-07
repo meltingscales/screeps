@@ -27,7 +27,7 @@ var roleBuilder = //actually doesn't do shit
     
     
     
-    if((game.time % 5 == 0) && (creep.memory["wedonedidit"] == "indeed"))
+    if((Game.time % 5 == 0) && (creep.memory["wedonedidit"] == "indeed"))
     {
       creep.move(moveList[idx]);
       idx++;

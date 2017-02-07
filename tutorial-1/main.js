@@ -37,8 +37,8 @@ var birthHandler = require('birthhandler');
 
 // console.log(_.testin); //to test if my import works
 
-var creepArr = ["s1Creep_0","s1Creep_1","s1Creep_2","s1Creep_3"];
-var creepArr2 = ["s1Creep_0","s1Creep_1","s1Creep_2","s1Creep_3"];
+var creepArr = ["s1Creep_0","s1Creep_1","s1Creep_2","s1Creep_3"].reverse();
+var creepArr2 = ["s1Creep_0","s1Creep_1","s1Creep_2","s1Creep_3"].reverse();
 
 var harvesterBod = [WORK,CARRY,MOVE];
 var moverBod = [CARRY,MOVE,MOVE];
@@ -55,7 +55,7 @@ module.exports.loop = function()
     }
   }
   
-  Spawn1.maintainPopulation([harvesterBod,moverBod],[7,3],"spawn1Creep_");
+  // Spawn1.maintainPopulation([harvesterBod,moverBod],[7,3],"spawn1Creep_");
   
   
 
@@ -64,9 +64,9 @@ module.exports.loop = function()
   {
     for(i = 0; i < creepArr.length; i++)
     {
-      if(Spawn1.birthCreep([WORK, CARRY, MOVE],creepArr[i]) == OK) //birth creep
+      if(Spawn1.birthCreep([WORK, CARRY, MOVE], creepArr[i]) == OK) //birth creep
       {
-        creepArr[i] = "";//argh
+        creepArr.pop();
       };
     }
   }

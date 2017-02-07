@@ -17,12 +17,14 @@ var exportsMan =
     {
       case "HARVESTER":
         roleHarvester.run(creep);
+        break;
       
       case "BUILDER":
         roleBuilder.run(creep);
+        break;
         
       default:
-        console.log("creep with job "+ creep.memory.role +" don't know what to do!!! AAAAA");
+        console.log(creep.name + " with job "+ creep.memory.role +" don't know what to do!!! AAAAA");
         
     }
   }
