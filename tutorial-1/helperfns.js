@@ -3,6 +3,38 @@ var constants = require('constants');
 var poopybutt =
 {
 
+  calcCreepCreationTime(creepBody)
+  {
+    return (creepBody.length * 3);
+  },
+  
+  /**
+  * @param {string[]} creepBody
+  * @return {int} How much a creepBody costs to make
+  **/
+  calcCreepCreationCost(creepBody)
+  {
+    var creepBodyStr = JSON.stringify(creepBody.sort());
+    
+    
+    if(Memory.cache == undefined){Memory.cache={}};
+    
+    if(Memory.cache.calcCreepCreationCost[ creepBodyStr ] != undefined)
+    {
+      return Memory.cache.calcCreepCreationCost[ creepBodyStr ];//we have it cached
+    }
+    
+    var ret = 0;
+    
+    for(i = 0; i < creepBody.length; i++)
+    {
+      ret += BODYPART_COST[creepBody[i]];
+    }
+    
+    Memory.cache.calcCreepCreationCost[ creepBodyStr ] = ret;
+    return ret;
+  },
+
   runEvery(muhfunc, secs, verbose)
   {
     if(((Game.time ) % secs) == 0)

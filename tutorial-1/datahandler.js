@@ -42,56 +42,28 @@ processToSpawnList(spawner, toSpawnList)
 
 
 /**
-  * @param {StructureSpawn} spawner
   * @param {string[]} creepNames
   **/
-rebuildCreepBodypartNumbers(spawner, creepNames) //returns a list of bodytypes from a spawner and list of creepnames.
+rebuildBodytypes(creepNames) //returns a list of bodytypes from a list of creepnames.
 {
-  if(creepNames == undefined)
+  console.log("rebuilding bodytypes with list... " + JSON.stringify(creepNames));
+  
+  var ret = {};
+  
+  for(i = 0; i < creepNames.length-1; i++)
   {
-    var creepNames = spawner.memory.creeps;
-  }
-  else
-  {
-    var creepNames = creepNames;
-  }
-
-  existingBodyparts = {};
-
-
-  if(existingBodyparts.bodyType == undefined)
-  {
-    existingBodyparts.bodyType = [];
-  }
-
-  if(existingBodyparts.bodyTypeN == undefined)
-  {
-    existingBodyparts.bodyTypeN = [];
-  }
-
-
-  for(i = 0; i < creepNames.length; i++)
-  {
-    currBody = Memory.creeps[creepNames[i]].body.sort();
-
-    if(existingBodyparts.bodyType[i] == undefined)
+    var currName = JSON.stringify(Memory.creep[creepNames[i]].sort());
+    
+    if(ret[currName] == undefined)
     {
-      console.log("existingBodyparts.bodyType[i] == undefined, setting to " + currBody);
-      existingBodyparts.bodyType[i] = currBody; //make key if doesn't exist
+      ret[currName] = 0;
     }
-
-    if(existingBodyparts.bodyTypeN[i] == undefined)
-    {
-      console.log("existingBodyparts.bodyTypeN[i] == undefined, setting to 0. ");
-      existingBodyparts.bodyTypeN[i] = 0;
-    }
-
-    existingBodyparts.bodyTypeN[i]++; //increment, for example, { [WORK,GATHER,MOVE] : 0 } by 1.
-    console.log("found creep with name \'" + creepNames[i] + "\', bodytype " + currBodyStr + ",\n");
-    console.log("existingBodyparts["+currBodyStr+"] is now " + existingBodyparts[currBodyStr]);
+    
+    ret[currName] += 1;
   }
+  
+  return ret;
 
-  return existingBodyparts;
 },
 
 rebuildToSpawnList(spawner, maxPop, ratiosList, bodyPartsList)

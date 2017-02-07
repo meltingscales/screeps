@@ -1,13 +1,14 @@
 var test = require('helperfns');
 
+
 var roleHarvester =
 {
   /** @param {Creep} creep **/
-  run: function(creep)
+  run(creep)
   {
     if(creep.memory["ROLE"] == undefined)
     {
-      creep.memory["ROLE"] = "ROLEHARVESTER";
+      creep.memory["ROLE"] = "HARVESTER";
     }
 
 
@@ -29,6 +30,6 @@ var roleHarvester =
     }
   }
 
-};
+}
 
 module.exports = roleHarvester;
