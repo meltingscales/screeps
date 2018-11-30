@@ -1,2 +1,3 @@
-.sync
-ScreepsAutocomplete-master/
+.screeps.json
+node_modules
+dist
